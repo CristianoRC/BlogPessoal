@@ -758,6 +758,7 @@ pre code {
   position: relative;
   margin-left: auto;
   margin-right: auto;
+  min-width: 70vw;
   padding-right: 15px;
   padding-left: 15px;
 }
