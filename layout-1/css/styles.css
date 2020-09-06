@@ -368,28 +368,15 @@ header .src-area .src-btn {
 }
 
 .single-post .post-footer {
+  padding: 15px 0px;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   text-align: center;
-}
-
-.single-post .post-footer > li {
-  width: 33.33%;
-  display: inline-block;
-  border-right: 1px solid #fff;
   background: #edf3f3;
 }
 
-.single-post .post-footer > li:first-child {
-  float: left;
-}
-
-.single-post .post-footer > li:last-child {
-  border: 0px;
-  float: right;
-}
 
 .single-post .post-footer > li > a {
   line-height: 45px;
@@ -403,6 +390,13 @@ header .src-area .src-btn {
   font-size: 1.1em;
 }
 
+.truncate {
+  width: 5ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ---------------------------------
 6. NORMAL BLOG
 --------------------------------- */
@@ -410,6 +404,10 @@ header .src-area .src-btn {
 .post-style-1 .blog-image {
   max-height: 200px;
   overflow: hidden;
+}
+
+.post-style-1 .blog-info {
+  padding-bottom: 20px;
 }
 
 /* ---------------------------------

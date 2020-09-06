@@ -112,13 +112,7 @@ function GeneratePostCard(postData) {
 
 		  <ul class="post-footer">
 			<li>
-			  <a href="#"><i class="ion-heart"></i>57</a>
-			</li>
-			<li>
-			  <a href="#"><i class="ion-chatbubble"></i>6</a>
-			</li>
-			<li>
-			  <a href="#"><i class="ion-eye"></i>138</a>
+			  <a href="#"><i class="ion-calendar"></i><strong>${new Date(postData.pubDate).toLocaleDateString("pt-BR")}</strong></a>
 			</li>
 		  </ul>
 		</div>
@@ -135,4 +129,5 @@ window.onload = function () {
 	var container = document.getElementById("posts-container");
 
 	container.innerHTML = posts;
+	console.log(blogPosts[0])
 }
