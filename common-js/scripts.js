@@ -129,5 +129,4 @@ window.onload = function () {
 	var container = document.getElementById("posts-container");
 
 	container.innerHTML = posts;
-	console.log(blogPosts[0])
 }
