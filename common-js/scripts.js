@@ -99,7 +99,7 @@ function GeneratePostCard(postData) {
 		  />
 		</div>
 
-		<a class="avatar" href="${postData.link}"
+		<a class="avatar" href="${postData.link} target="_blank""
 		  ><img
 			src="https://www.cristianoprogramador.com/img/profile.jpg"
 			alt="Profile Image"
@@ -107,7 +107,7 @@ function GeneratePostCard(postData) {
 
 		<div class="blog-info">
 		  <h4 class="title">
-			<a href="${postData.link}"><b>${postData.title}</b></a>
+			<a href="${postData.link}" target="_blank"><b>${postData.title}</b></a>
 		  </h4>
 
 		  <ul class="post-footer">
