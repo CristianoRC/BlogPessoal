@@ -6,7 +6,7 @@ description: ""
 draft: false
 categories:
   - CSharp
-  - Seguranç
+  - Segurança
 tags:
   - C#
   - .NET
