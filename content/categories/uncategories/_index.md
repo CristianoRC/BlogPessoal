@@ -1,5 +1,6 @@
 ---
-title: "Uncategories"
+title: "Sem categoria"
 draft: false
 ---
-Description
+
+Postes sem Categoria
