@@ -1,5 +1,5 @@
 baseURL = 'http://blog.cristianoprogramador.com'
-copyright = "{year}" # To make 2007 - 2022. Just add before {year} example: 2007 - {year}
+copyright = "{year}"
 languageCode = 'pt-BR'
 defaultContentLanguage = 'pt'
 theme = 'enchanted-lowkey'
