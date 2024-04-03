@@ -5,22 +5,22 @@
     weight = 1
 
 [[main]]
-    identifier = "sobre"
-    name = "Sobre"
-    url = "https://www.cristianoprogramador.com/"
-    weight = 2
-
-[[main]]
     identifier = "categories"
     name = "Categorias"
     url = "/categories"
-    weight = 3
+    weight = 2
 
 [[main]]
     identifier = "tags"
     name = "Tags"
     url = "/tags"
-    weight = 4
+    weight = 3
+
+[[main]]
+identifier = "sobre"
+name = "Sobre"
+url = "https://www.cristianoprogramador.com/"
+weight = 4
     
 # Social Media Configuration
 [[social]]
