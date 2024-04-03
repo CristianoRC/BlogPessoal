@@ -118,17 +118,11 @@ Exemplo de dado estático: .RuleFor(p => p.Nome, f => “Olá”)
 
 ```csharp
 var faker = new Faker<Pessoa>("pt_BR").StrictMode(true)
-
 .RuleFor(p => p.CPF, f => f.Person.Cpf())
-
 .RuleFor(p => p.Nome, f => f.Person.FullName)
-
 .RuleFor(p => p.UrlDaFoto, f => f.Person.Avatar)
-
 .RuleFor(p => p.IpDeAcesso, f => f.Internet.IpAddress().ToString())
-
 .RuleFor(p => p.NumeroDaConta, f => f.Finance.Account())
-
 .RuleFor(p => p.Saldo, f => f.Finance.Amount(1, 10000));
 ```
 
@@ -143,19 +137,12 @@ Conteúdo da variável Pessoa
 
 ```json
 {
-
-   "CPF": "108.641.241-98",
-
-   "Nome": "Amelia Batista",
-
-   "UrlDaFoto": "https://s3.amazonaws.com/uifaces/faces/twitter/markjenkins/128.jpg",
-
-   "IpDeAcesso": "133.193.69.146",
-
-   "NumeroDaConta": "72381984",
-
-   "Saldo": 886.92
-
+  "CPF": "108.641.241-98",
+  "Nome": "Amelia Batista",
+  "UrlDaFoto": "https://s3.amazonaws.com/uifaces/faces/twitter/markjenkins/128.jpg",
+  "IpDeAcesso": "133.193.69.146",
+  "NumeroDaConta": "72381984",
+  "Saldo": 886.92
 }
 ```
 
