@@ -19,7 +19,6 @@
 
     
 # Social Media Configuration
-
 [[social]]
     identifier = "github"
     name = "GitHub"
