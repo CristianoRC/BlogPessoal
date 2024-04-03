@@ -70,6 +70,16 @@ Email: [contato@cristianoprogramador.com](mailto:contato@cristianoprogramador.co
 
 ### Referências:
 
-[Guia do .NET Core](https://docs.microsoft.com/pt-br/dotnet/core/ "https://docs.microsoft.com/pt-br/dotnet/core/")[Miguel de Icaza - Wikipedia](https://en.wikipedia.org/wiki/Miguel_de_Icaza "https://en.wikipedia.org/wiki/Miguel_de_Icaza")[Rider, uma IDE .NET pra Linux e Mac](http://gabsferreira.com/rider-a-ide-net-pra-linux-e-mac/ "http://gabsferreira.com/rider-a-ide-net-pra-linux-e-mac/")[Mono (projeto) - Wikipédia, a enciclopédia livre](https://pt.wikipedia.org/wiki/Mono_%28projeto%29 "https://pt.wikipedia.org/wiki/Mono_(projeto)")[Difference Between .NET Framework and .NET Core](https://www.c-sharpcorner.com/article/difference-between-net-framework-and-net-core/ "https://www.c-sharpcorner.com/article/difference-between-net-framework-and-net-core/")[.NET Standard](https://docs.microsoft.com/pt-br/dotnet/standard/net-standard "https://docs.microsoft.com/pt-br/dotnet/standard/net-standard")
+[Guia do .NET Core](https://docs.microsoft.com/pt-br/dotnet/core/ "https://docs.microsoft.com/pt-br/dotnet/core/")
 
-[https://www.lambda3.com.br/2016/10/o-que-e-xamarin](https://www.lambda3.com.br/2016/10/o-que-e-xamarin/)
+[Miguel de Icaza - Wikipedia](https://en.wikipedia.org/wiki/Miguel_de_Icaza "https://en.wikipedia.org/wiki/Miguel_de_Icaza")
+
+[Rider, uma IDE .NET pra Linux e Mac](http://gabsferreira.com/rider-a-ide-net-pra-linux-e-mac/ "http://gabsferreira.com/rider-a-ide-net-pra-linux-e-mac/")
+
+[Mono (projeto) - Wikipédia, a enciclopédia livre](https://pt.wikipedia.org/wiki/Mono_%28projeto%29 "https://pt.wikipedia.org/wiki/Mono_(projeto)")
+
+[Difference Between .NET Framework and .NET Core](https://www.c-sharpcorner.com/article/difference-between-net-framework-and-net-core/ "https://www.c-sharpcorner.com/article/difference-between-net-framework-and-net-core/")
+
+[.NET Standard](https://docs.microsoft.com/pt-br/dotnet/standard/net-standard "https://docs.microsoft.com/pt-br/dotnet/standard/net-standard")
+
+[O que é Xamarin](https://www.lambda3.com.br/2016/10/o-que-e-xamarin/)
