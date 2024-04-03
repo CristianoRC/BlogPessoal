@@ -32,6 +32,9 @@ Entendi, mas como dar os primeiros passos com C# no linux? Tem que baixar o Visu
 
 Se você está pensando em desenvolver C# no Linux possivelmente já teve algum contato com o terminal. Se o terminal não te da “medo”, basta fazer a [instalação do SDK](https://dotnet.microsoft.com/download) e você conseguirá trabalhar de maneira fácil com C#, utilizando o editor de texto de sua preferência e poucos comandos, vais consegue criar, e rodar uma aplicação.
 
+{{< vimeo 303976997 >}}
+
+
 Todos os comandos você pode encontrar na [documentação do CLI](https://docs.microsoft.com/pt-br/dotnet/core/tools/?tabs=netcore2x)
 
 Se você não é muito fã de linha de comando e editores de texto, existem alternativas ao famoso Visual Studio.
