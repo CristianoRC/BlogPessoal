@@ -1,5 +1,5 @@
 ---
-title: "Utilizando mascara de senha no console -C#"
+title: "Utilizando mascara de senha no console - C#"
 author: "Cristiano Raffi Cunha"
 date: 2017-10-03T23:04:35.606Z
 description: ""
