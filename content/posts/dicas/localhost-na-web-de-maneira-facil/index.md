@@ -88,6 +88,6 @@ OBrigado ;D
 
 [OpenSSH](https://www.openssh.com/ "https://www.openssh.com/")
 
-[https://www.youtube.com/watch?v=jfSLxs40sIw](https://www.youtube.com/watch?v=jfSLxs40sIw)
+[Beginners Guide to Port Forwarding](https://www.youtube.com/watch?v=jfSLxs40sIw)
 
-[https://www.youtube.com/watch?v=AtuAdk4MwWw](https://www.youtube.com/watch?v=AtuAdk4MwWw)
+[SSH Tunneling Explained](https://www.youtube.com/watch?v=AtuAdk4MwWw)
