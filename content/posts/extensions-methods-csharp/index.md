@@ -1,7 +1,7 @@
 ---
 title: "Extensions Methods — C#"
 author: "Cristiano Raffi Cunha"
-date: 2017-09-13T23:35:06.826Z
+date: 2017-09-14T23:35:06.826Z
 draft: false
 categories:
   - CSharp
