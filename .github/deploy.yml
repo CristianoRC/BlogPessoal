@@ -37,9 +37,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Remove Templates
-        run: rm -rf ./themes/enchanted-lowkey/archetypes
-
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
