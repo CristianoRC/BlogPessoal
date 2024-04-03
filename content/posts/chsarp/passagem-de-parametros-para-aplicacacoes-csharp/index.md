@@ -7,6 +7,8 @@ description: "Como passar comandos do CLI para dentro da sua aplicação .NET C#
 draft: false
 categories:
   - CSharp
+tags:
+  - .NET
 
 ---
 
