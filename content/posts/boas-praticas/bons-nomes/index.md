@@ -10,7 +10,7 @@ tags:
   - Clean Code
 
 images:
-  - ./images/2019-09-29_como-escrever-um-código-mais-limponomes-significativos_0.png
+  - /posts/boas-praticas/bons-nomes/images/2019-09-29_como-escrever-um-código-mais-limponomes-significativos_0.png
 ---
 
 ![](./images/2019-09-29_como-escrever-um-código-mais-limponomes-significativos_0.png#center)
