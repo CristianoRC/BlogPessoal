@@ -11,7 +11,7 @@ avatar = "img/profile-picture.jpg"
 favicon = "icons/favicon.ico"
 
 # disqus is a comment system. see https://disqus.com
-disqusShortname = ""
+disqusShortname = "http-blog-cristianoprogramador-com"
 
 [emoji]
 enableEmoji = true
