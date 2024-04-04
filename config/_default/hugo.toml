@@ -1,6 +1,6 @@
 baseURL = 'http://blog.cristianoprogramador.com'
 copyright = "{year}"
-languageCode = 'pt-BR'
+languageCode = 'pt-br'
 defaultContentLanguage = 'pt'
 theme = 'enchanted-lowkey'
 title = 'Blog - Cristiano Raffi Cunha'
