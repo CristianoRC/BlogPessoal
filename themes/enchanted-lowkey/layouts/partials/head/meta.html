@@ -8,6 +8,9 @@
   name="description"
   content="{{ if .IsPage }}{{ or .Params.description .Summary }}{{ else if .IsHome }}{{ .Site.Params.description }}{{ else if .IsNode }}{{ or .Params.description .Summary }}{{ end }}"
 />
+
+<meta name="google-site-verification" content="LAWss35SXDdovnnYs9qjxYEiRV0qIfDqXcPHWL_i_xM" />
+
 <link rel="canonical" href="{{ .Permalink }}" />
 <link rel="robots" href="/robots.txt" />
 
