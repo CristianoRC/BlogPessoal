@@ -10,7 +10,9 @@ categories:
 tags:
   - C#
   - .NET
-
+images:
+  - /posts/chsarp/images/capa.png
+  
 ---
 
 ![](./images/capa.png)

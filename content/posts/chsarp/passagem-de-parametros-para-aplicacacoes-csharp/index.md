@@ -9,6 +9,8 @@ categories:
   - CSharp
 tags:
   - .NET
+images:
+  - /posts/chsarp/images/2019-02-04_passagem-de-parâmetros-para-a-aplicação-c-sharp_0.png
 
 ---
 
