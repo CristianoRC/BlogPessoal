@@ -6,6 +6,8 @@ lastmod: 2024-04-03T08:30:35-03:00
 description: ""
 categories:
   - Educação
+images:
+  - /posts/educacao/utilizando-o-humor-na-educação/images/2020-09-27_utilizando-o-humor-na-educação_0.png
 
 ---
 

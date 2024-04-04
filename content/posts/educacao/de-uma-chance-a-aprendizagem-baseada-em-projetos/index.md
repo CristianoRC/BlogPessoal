@@ -10,7 +10,8 @@ categories:
 tags:
   - PBL
 TableOfContents: false
-
+images:
+  - /posts/educacao/de-uma-chance-a-aprendizagem-baseada-em-projetos/2019-08-01_de-uma-chance-a-aprendizagem-baseada-em-projetos_0.png
 ---
 
 ![](./images/2019-08-01_de-uma-chance-a-aprendizagem-baseada-em-projetos_0.png#center)
