@@ -11,6 +11,8 @@ tags:
   - C#
   - .NET
   - Testes de unidade
+images:
+  - /posts/testes/gerando-dados-alteatorios-com-bogus/images/capa.png
 
 ---
 

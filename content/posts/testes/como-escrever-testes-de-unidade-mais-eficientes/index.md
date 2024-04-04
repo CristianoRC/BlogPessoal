@@ -8,7 +8,9 @@ categories:
   - Testes
 tags:
   - Testes de unidade
-
+images:
+  - /posts/testes/como-escrever-testes-de-unidade-mais-eficientes/images/2020-05-31_10-passos-para-escrever-testes-unitários-mais-eficientes_0.png
+  
 ---
 
 ![](./images/2020-05-31_10-passos-para-escrever-testes-unitários-mais-eficientes_0.png#center)

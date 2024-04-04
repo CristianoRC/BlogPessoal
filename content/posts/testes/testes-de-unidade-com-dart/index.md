@@ -11,7 +11,9 @@ categories:
 tags:
   - Flutter
   - Testes de unidade
-
+images:
+  - /posts/testes/testes-de-unidade-com-dart/images/2019-04-24_testes-unitáriosdart_0.png
+  
 ---
 
 ![](./images/2019-04-24_testes-unitáriosdart_0.png#center)
