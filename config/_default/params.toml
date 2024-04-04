@@ -10,11 +10,9 @@ avatar = "img/profile-picture.jpg"
 #favicon
 favicon = "icons/favicon.ico"
 
-# disqus is a comment system. see https://disqus.com
-disqusShortname = "http-blog-cristianoprogramador-com"
-
 [emoji]
 enableEmoji = true
+
 
 # giscus is a comment system based on GitHub Discussions. see https://giscus.app
 [giscus]       
