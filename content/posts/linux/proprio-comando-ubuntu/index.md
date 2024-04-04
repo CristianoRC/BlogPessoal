@@ -10,6 +10,8 @@ categories:
 tags:
   - Ubuntu
   - Dicas
+images:
+  - /posts/linux/proprio-comando-ubuntu/images/capa.png
 
 ---
 

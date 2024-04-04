@@ -10,6 +10,8 @@ categories:
 tags:
   - C#
   - .NET
+images:
+  - /posts/linux/primeiros-passos-csharp-no-linux/images/capa.png
 
 ---
 

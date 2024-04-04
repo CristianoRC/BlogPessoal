@@ -8,6 +8,8 @@ draft: false
 categories:
   - Docker
   - Linux
+images:
+  - /posts/linux/docker-para-quem-tem-preguica/images/2019-01-06_servidores-para-quem-tem-preguiçadocker_0.png
   
 ---
 
