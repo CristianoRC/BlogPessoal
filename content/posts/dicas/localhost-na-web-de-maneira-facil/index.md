@@ -10,7 +10,7 @@ categories:
 tags:
   - Redes
 images:
-  - /posts/dicas/images/2019-03-20_localhost-na-web-de-maneira-fácil_0.png
+  - /posts/dicas/localhost-na-web-de-maneira-facil/images/2019-03-20_localhost-na-web-de-maneira-fácil_0.png
 
 ---
 

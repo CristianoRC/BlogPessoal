@@ -11,7 +11,7 @@ tags:
   - C#
   - .NET
 images:
-  - /posts/chsarp/images/capa.png
+  - /posts/chsarp/municipios-e-estados-brasileiros-csharp/images/capa.png
 
 ---
 

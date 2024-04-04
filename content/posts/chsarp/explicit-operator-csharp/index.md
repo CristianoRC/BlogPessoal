@@ -11,7 +11,7 @@ tags:
   - C#
   - .NET
 images:
-  - /posts/chsarp/images/capa.png
+  - /posts/chsarp/explicit-operator-csharp/images/capa.png
 ---
 
 ![](./images/capa.png#center)

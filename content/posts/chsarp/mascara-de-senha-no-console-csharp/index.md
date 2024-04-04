@@ -11,7 +11,7 @@ tags:
   - C#
   - .NET
 images:
-  - /posts/chsarp/images/capa.png
+  - /posts/chsarp/mascara-de-senha-no-console-csharp/images/capa.png
   
 ---
 

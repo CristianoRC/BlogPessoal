@@ -9,7 +9,7 @@ tags:
   - C#
   - .NET
 images:
-  - /posts/chsarp/images/capa.png
+  - /posts/chsarp/extensions-methods-csharp/images/capa.png
   
 ---
 
