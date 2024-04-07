@@ -1,4 +1,6 @@
 User-agent: *
-{{ range .Pages }}
-Disallow: {{ .RelPermalink }}
-{{ end }}
+
+Disallow: /tags/
+Disallow: /categories/
+
+Sitemap: https://blog.cristianoprogramador.com/sitemap.xml
