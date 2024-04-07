@@ -7,6 +7,7 @@ description: "Um das formas mais simples de estar em conformidade com LGPD/GDPR 
 draft: true
 categories:
   - Segurança
+  - Arquitetura
 images:
   - /posts/seguranca/cryptoshred/images/capa.png
   
