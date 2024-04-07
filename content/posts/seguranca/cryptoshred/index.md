@@ -13,4 +13,4 @@ images:
   
 ---
 
-![](./images/capa.png)
+![](./images/capa.png#center)
