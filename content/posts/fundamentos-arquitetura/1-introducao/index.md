@@ -10,7 +10,7 @@ categories:
   - Arquitetura
   - Engenharia
 images:
-  - /posts/fundamentos-arquitetura/cap1/images/capa.png
+  - /posts/fundamentos-arquitetura/1-introducao/images/capa.png
   
 ---
 
