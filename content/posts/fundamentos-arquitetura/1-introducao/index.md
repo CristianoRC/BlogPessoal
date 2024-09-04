@@ -3,7 +3,7 @@ title: "Introdução - Fundamentos da Arquitetura de Software"
 author: "Cristiano Raffi Cunha"
 date: 2024-07-26
 lastmod: 2024-07-26
-description: "Introdução - Fundamentos da Arquitetura de Software: uma Abordagem de Engenharia"
+description: "O artigo apresenta uma introdução ao papel do arquiteto de software, destacando a complexidade de definir a arquitetura, os principais papéis de um arquiteto e a importância de tomar decisões equilibradas entre riscos, custos e estratégias de negócio."
 draft: false
 tableOfContents: false
 categories:
