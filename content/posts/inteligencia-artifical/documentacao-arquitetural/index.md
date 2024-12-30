@@ -21,6 +21,9 @@ images:
 
 Olá, pessoal! Recentemente, gravei um vídeo sobre como utilizar inteligência artificial para criar documentação arquitetural de forma eficiente. Neste artigo, vou compartilhar os prompts que utilizei durante a demonstração, para que vocês possam experimentar e adaptar para seus próprios projetos.
 
+{{< youtube c3TsqAeklXs >}}
+
+
 ## Contexto
 
 Antes de mergulharmos nos prompts, é importante entender o contexto. A documentação arquitetural é crucial para o desenvolvimento de software, mas muitas vezes é vista como uma tarefa tediosa e demorada. Com o auxílio da IA, podemos tornar esse processo mais ágil e eficaz, permitindo que arquitetos e desenvolvedores se concentrem mais na solução de problemas e menos na burocracia da documentação.
