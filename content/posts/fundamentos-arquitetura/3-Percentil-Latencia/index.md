@@ -13,7 +13,7 @@ tags:
   - Observabilidade
 images:
   - /posts/fundamentos-arquitetura/percentil-latencia/images/capa.png
-  
+math: true
 ---
 
 > **Disclaimer**
