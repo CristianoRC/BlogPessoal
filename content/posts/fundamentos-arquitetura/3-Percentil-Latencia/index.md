@@ -58,15 +58,11 @@ Dados Ordenados de tempo de resposta(ms)
 
 Primeira coisa é identificar a posição em que o valor que você procura está, exemplo, P50.
 
-$$
-Posicao = \frac{P}{100} \times (n + 1)
-$$
+$$Posicao = \frac{P}{100} \times (n + 1)$$
 
 **P** é percentil desejado (Ex.: 50, 90, 99) e **N** é quantidade de elementos
 
-$$
-Posicao = (50 / 100) \times (15 + 1) = 8
-$$
+$$Posicao = \frac{50}{100} \times (15 + 1) = 8$$
 
 Importante, esse não é o index do array, é a ordem "humana". Agora que sabemos a posição desse percentil, basta buscar o valor na lista ordenada, no caso:
 
