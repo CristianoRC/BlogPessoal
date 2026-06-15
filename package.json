@@ -17,6 +17,11 @@
   "bugs": {
     "url": "https://github.com/nixentric/Lowkey-Hugo-Theme/issues"
   },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "cssnano": "^5.1.14",
