@@ -1,13 +1,13 @@
 ---
-title: "Estatística para Devs: Como calcular e analisar Percentis de Latência"
+title: "Estatística para Devs: Como calcular e analisar Percentis de Tempo de Resposta"
 author: "Cristiano Raffi Cunha"
 date: 2026-01-14T00:00:00-03:00
 lastmod: 2026-01-14T00:00:00-03:00
-description: "Aprenda por que a média esconde problemas de performance e como calcular P50, P90 e P99 para medir a latência real do seu sistema."
+description: "Aprenda por que a média esconde problemas de performance e como calcular P50, P90 e P99 para medir o tempo de resposta real do seu sistema."
 categories:
   - Fundamentos de Arquitetura
 tags:
-  - Latência
+  - Tempo de Resposta
   - Performance
   - Percentil
   - Observabilidade
@@ -22,11 +22,11 @@ math: true
 
 ## O que é o Percentil
 
-O **percentil** é uma medida estatística que indica o valor abaixo do qual uma determinada porcentagem de dados em um conjunto se encontra. Por exemplo, se a latência do percentil 95 (P95) de um sistema é de 200ms, isso significa que 95% das requisições são processadas em até 200ms, enquanto apenas 5% demoram mais que isso.
+O **percentil** é uma medida estatística que indica o valor abaixo do qual uma determinada porcentagem de dados em um conjunto se encontra. Por exemplo, se o tempo de resposta do percentil 95 (P95) de um sistema é de 200ms, isso significa que 95% das requisições são processadas em até 200ms, enquanto apenas 5% demoram mais que isso.
 
-No contexto de análise de latência, os percentis são fundamentais porque a **média** costuma ser uma métrica enganosa. Um pequeno número de requisições muito lentas (ou muito rápidas) pode distorcer significativamente a média, escondendo problemas reais enfrentados por uma parcela dos usuários.
+No contexto de análise de tempo de resposta, os percentis são fundamentais porque a **média** costuma ser uma métrica enganosa. Um pequeno número de requisições muito lentas (ou muito rápidas) pode distorcer significativamente a média, escondendo problemas reais enfrentados por uma parcela dos usuários.
 
-### Por que usar percentis na latência?
+### Por que usar percentis no tempo de resposta?
 
 * **Visibilidade de "Outliers":** Permite identificar os "caudas longas" (usuários que sofrem com lentidão extrema).
 * **Melhor Experiência do Usuário:** Focar em métricas como P99 garante que quase todos os usuários tenham uma boa experiência, e não apenas a "maioria média".
@@ -81,7 +81,7 @@ Importante, esse não é o index do array, é a ordem "humana". Agora que sabemo
 
 - Média sozinha não representa a experiência real do usuário
 
-- Percentis mostram a distribuição real da latência
+- Percentis mostram a distribuição real do tempo de resposta
 
 - Percentis altos (P95, P99) revelam a experiência dos usuários na cauda da distribuição
 
@@ -89,4 +89,4 @@ Importante, esse não é o index do array, é a ordem "humana". Agora que sabemo
 
 - Sempre considere o tamanho da amostra ao analisar percentis
 
-**Para latência em produção, pense sempre em P50, P90, P95 e P99.** E lembre-se: 1% de 1 bilhão de requisições é 10 milhões de possíveis usuários afetados, por isso P99 importa.
+**Para tempo de resposta em produção, pense sempre em P50, P90, P95 e P99.** E lembre-se: 1% de 1 bilhão de requisições é 10 milhões de possíveis usuários afetados, por isso P99 importa.
