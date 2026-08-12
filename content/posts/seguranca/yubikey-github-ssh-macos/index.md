@@ -2,7 +2,7 @@
 title: "Autenticando e assinando commits no GitHub com YubiKey no macOS, sem GPG"
 author: "Cristiano Raffi Cunha"
 date: 2026-08-04T00:00:00-03:00
-lastmod: 2026-08-04T00:00:00-03:00
+lastmod: 2026-08-12T00:00:00-03:00
 description: "Como configurar uma chave SSH FIDO2 residente na YubiKey para clone, push e assinatura de commits no GitHub a partir do macOS. Sem GPG, sem PIN digitado, apenas toque físico."
 draft: false
 categories:
@@ -18,13 +18,13 @@ images:
 mermaid: true
 ---
 
-![](./images/capa.png#center)
+![capa](./images/capa.png#center)
 
-Chave SSH em arquivo no disco é um segredo copiável. Qualquer processo rodando com seu usuário consegue ler `~/.ssh/id_ed25519`, e a partir daí faz push no seu nome em qualquer repositório onde você tem acesso. Backup do disco, sincronização acidental para a nuvem, malware — em todos esses casos o segredo sai da máquina sem você perceber.
+Chave SSH em arquivo no disco é um segredo copiável. Qualquer processo rodando com seu usuário consegue ler `~/.ssh/id_ed25519`, e a partir daí faz push no seu nome em qualquer repositório onde você tem acesso. Backup do disco, sincronização acidental para a nuvem, malware: em todos esses casos o segredo sai da máquina sem você perceber.
 
 Uma YubiKey resolve isso de forma diferente de como se costuma imaginar. Ela não guarda o arquivo da chave em um cofre: a chave privada é **gerada dentro do token e nunca sai de lá**. O que fica no seu disco é apenas uma referência. Sem o dispositivo físico plugado, esse arquivo não serve para nada.
 
-Este guia configura uma única chave que faz as duas coisas — autenticação (clone e push) e assinatura de commits — usando FIDO2 puro. Sem GPG, sem agente de smartcard, sem PIN digitado no teclado. Só o toque no sensor.
+Este guia configura uma única chave que faz as duas coisas, autenticação (clone e push) e assinatura de commits, usando FIDO2 puro. Sem GPG, sem agente de smartcard, sem PIN digitado no teclado. Só o toque no sensor.
 
 Substitua `voce@exemplo.com` pelo seu e-mail verificado no GitHub em todos os comandos.
 
@@ -58,11 +58,11 @@ sequenceDiagram
 
 ## Pré-requisitos
 
-- YubiKey 5 com firmware 5.2.3 ou superior — antes disso a applet FIDO2 não faz Ed25519
+- Uma YubiKey com FIDO2 e firmware 5.2.3 ou superior. Vale tanto a 5 Series quanto a Security Key Series, que é FIDO-only; antes do 5.2.3 a applet FIDO2 não faz Ed25519
 - macOS com Homebrew
 - Git 2.34 ou superior, para assinatura via SSH
 
-O firmware é gravado de fábrica e não é atualizável. Se o seu estiver abaixo de 5.2.3, dá para seguir o guia trocando `ed25519-sk` por `ecdsa-sk` em todos os comandos. A verificação vem no fim do passo 1, porque a ferramenta que reporta a versão é instalada lá.
+O firmware é gravado de fábrica e não é atualizável. Se o seu estiver abaixo de 5.2.3, dá para seguir o guia trocando `ed25519-sk` por `ecdsa-sk` em todos os comandos. A verificação do modelo e da versão vem no fim do passo 1, porque a ferramenta que reporta as duas é instalada lá.
 
 ## 1. Instalação
 
@@ -87,13 +87,46 @@ ssh -V
 
 O caminho do Homebrew precisa aparecer **antes** de `/usr/bin`, e a versão não deve mencionar "Apple". Se mencionar, o PATH não foi aplicado nesta sessão do shell.
 
-Com o `ykman` disponível, confira o firmware do dispositivo:
+### Qual YubiKey você tem?
+
+Qualquer YubiKey com FIDO2 serve para este guia. O que muda entre as linhas é só o passo 2, que endurece applets que nem toda chave tem:
 
 ```bash
 ykman info
 ```
 
-Se a versão for menor que 5.2.3, use `ecdsa-sk` no lugar de `ed25519-sk` daqui para frente.
+Na tabela `Applications`, `Not available` é hardware: não há comando que habilite.
+
+| `ykman info` mostra | Linha | O que muda |
+|---|---|---|
+| FIDO2, PIV, OpenPGP, OATH e Yubico OTP `Enabled` | **YubiKey 5 Series** (5 NFC, 5C, 5 Nano, 5C NFC…) | Nada. Sem NFC no modelo, omita o `ykman config nfc --disable OTP` do passo 2 |
+| FIDO2 e FIDO U2F `Enabled`, o resto `Not available` | **Security Key Series** (Security Key NFC, C NFC) | No passo 2, faça só o PIN do FIDO2; PIV e OTP não existem aqui |
+| Sem FIDO2, só FIDO U2F | **YubiKey 4 / 4C / NEO** | Não serve: sem CTAP2 não há `-O resident` |
+
+As duas primeiras servem igual como chave principal: aqui uma Security Key faz tudo que uma 5 Series faz. A 5 Series só pesa se você usa OATH, PIV ou OpenPGP, que uma reserva FIDO-only não devolve.
+
+Ed25519 na applet FIDO2 chegou no firmware 5.2.3. Abaixo disso, troque `ed25519-sk` por `ecdsa-sk` em todos os comandos; unidades compradas hoje vêm com 5.7.x.
+
+Uma Security Key C NFC, para comparação. Repare que não há linha `Serial number`:
+
+```bash
+Device type: Security Key C NFC
+Firmware version: 5.7.4
+Form factor: Keychain (USB-C)
+Enabled USB interfaces: FIDO
+NFC transport is enabled
+
+Applications  USB            NFC
+Yubico OTP    Not available  Not available
+FIDO U2F      Enabled        Enabled
+FIDO2         Enabled        Enabled
+OATH          Not available  Not available
+PIV           Not available  Not available
+OpenPGP       Not available  Not available
+YubiHSM Auth  Not available  Not available
+```
+
+Security Key Series fora da edição Enterprise não tem número de série. Se a sua mostra serial e PIV `Enabled`, é uma 5 Series.
 
 Para quem prefere interface gráfica, o [Yubico Authenticator](https://www.yubico.com/products/yubico-authenticator/) (versão 7 ou superior) faz as mesmas operações do `ykman` e é útil para visualizar o que está armazenado no dispositivo. Os comandos deste guia assumem a CLI.
 
@@ -103,13 +136,25 @@ Se o dispositivo acabou de sair da caixa, vale gastar dez minutos endurecendo a 
 
 Se a sua YubiKey já está em uso e configurada, pule para o passo 3.
 
-### Troque as credenciais padrão
+O YubiKey tem PINs independentes por applet, e só o primeiro abaixo vale para todos os modelos.
 
-O YubiKey tem PINs independentes por applet. Os que importam aqui são dois.
+### Defina o PIN do FIDO2
 
-**PIN do FIDO2** — é o que sites como GitHub, Google e AWS pedem quando você usa passkeys. Ele é definido no momento em que você cadastra a primeira passkey, ou pelo app de gerenciamento. Não confunda com o PIN do PIV.
+É o único item deste passo que existe em qualquer YubiKey com FIDO2, e o único que este guia de fato usa: é o PIN que sites como GitHub, Google e AWS pedem em passkeys, e o que protege as credenciais residentes do passo 3.
 
-**Applet PIV (smart card)** — só relevante se você for usar certificados ou SSH via PIV. As três credenciais de fábrica precisam ser trocadas:
+```bash
+ykman fido access change-pin
+```
+
+O mesmo comando serve para definir e para trocar. Chave nova não vem com PIN de fábrica: até você rodar isso, não há PIN nenhum, e sem PIN não dá para criar credencial residente nem listar o que está no dispositivo.
+
+O PIN aceita a partir de 4 caracteres, alfanuméricos; use de 6 a 8 dígitos. Quatro é pouco contra um contador de 8 tentativas, e esgotar as 8 bloqueia a applet, e destravar exige `ykman fido reset`, que apaga todas as credenciais residentes do dispositivo.
+
+### Troque as credenciais padrão do PIV
+
+> Só na 5 Series. Na Security Key Series não existe applet PIV, e os comandos abaixo falham por não ter com o que conversar.
+
+O PIV é o applet de smart card, relevante se você for usar certificados ou SSH via PIV. As três credenciais de fábrica precisam ser trocadas:
 
 ```bash
 ykman piv access change-management-key --generate --protect
@@ -119,9 +164,11 @@ ykman piv access change-pin
 
 A Management Key de fábrica é uma constante conhecida; `--generate --protect` gera uma nova e a guarda protegida pelo PIN, então você não precisa memorizá-la. O PUK padrão é `12345678` e o PIN padrão é `123456`.
 
-Este guia usa FIDO2, não PIV — se você não pretende usar PIV, tecnicamente pode pular esses três comandos. Mas deixar as credenciais de fábrica em um applet que você não usa também não é ideal: alguém com acesso físico ao dispositivo poderia provisionar certificados ali.
+Este guia usa FIDO2, não PIV. Se você não pretende usar PIV, tecnicamente pode pular esses três comandos. Mas deixar as credenciais de fábrica em um applet que você não usa também não é ideal: alguém com acesso físico ao dispositivo poderia provisionar certificados ali.
 
 ### Reduza a superfície de ataque
+
+> Também só na 5 Series. A Security Key Series não tem Yubico OTP para desativar.
 
 Desative o Yubico OTP. É o protocolo antigo, em que o toque no sensor digita uma string de 44 caracteres onde estiver o cursor. Se você não usa, ele só serve para produzir texto aleatório dentro do seu editor quando você toca na chave sem querer:
 
@@ -149,13 +196,13 @@ O que cada opção faz:
 
 | Opção | Efeito |
 |---|---|
-| `-O resident` | A credencial fica armazenada dentro da YubiKey, permitindo recuperá-la em uma máquina nova com `ssh-keygen -K`. Consome um slot (a YubiKey 5 tem cerca de 25) |
+| `-O resident` | A credencial fica armazenada dentro da YubiKey, permitindo recuperá-la em uma máquina nova com `ssh-keygen -K`. Consome um slot (25 até o firmware 5.6.x, 100 a partir do 5.7) |
 | `-O application=ssh:github` | Rótulo da credencial no token. Precisa começar com `ssh:`. É o que aparece em `ykman fido credentials list` |
 | `-N ""` | Sem passphrase no arquivo de handle |
 
 Uma opção que **não** está aí, de propósito: `-O verify-required`. Ela exige o PIN a cada operação e, em várias combinações de firmware e libfido2, quebra a assinatura `ed25519-sk` com o erro `Couldn't sign message: invalid format`. Se você quer PIN como segundo fator mesmo assim, use `ecdsa-sk`, que não sofre desse problema.
 
-Vale repetir, porque é o ponto que mais confunde: o arquivo `~/.ssh/id_ed25519_sk_github` **não é uma chave privada**. É um *key handle* — um ponteiro para a credencial dentro do token. Vazá-lo não expõe nada.
+Vale repetir, porque é o ponto que mais confunde: o arquivo `~/.ssh/id_ed25519_sk_github` **não é uma chave privada**. É um *key handle*, um ponteiro para a credencial dentro do token. Vazá-lo não expõe nada.
 
 Teste a assinatura antes de seguir adiante:
 
@@ -163,7 +210,7 @@ Teste a assinatura antes de seguir adiante:
 echo teste | ssh-keygen -Y sign -f ~/.ssh/id_ed25519_sk_github -n teste
 ```
 
-Deve pedir toque e imprimir um bloco `BEGIN SSH SIGNATURE`. Se falhar aqui, resolva antes de continuar — a seção de [diagnóstico](#10-diagnóstico-de-erros) cobre os casos comuns.
+Deve pedir toque e imprimir um bloco `BEGIN SSH SIGNATURE`. Se falhar aqui, resolva antes de continuar; a seção de [diagnóstico](#10-diagnóstico-de-erros) cobre os casos comuns.
 
 ## 4. Registro no GitHub
 
@@ -198,7 +245,7 @@ Host github.com
   IdentitiesOnly yes
 ```
 
-O `IdentitiesOnly yes` não é enfeite. Sem ele, o ssh oferece ao servidor todas as chaves que encontrar no diretório e no agente, uma por uma. Se você tem várias, o GitHub corta a conexão por excesso de tentativas antes de chegar na certa, e o erro que aparece é um genérico `Too many authentication failures`.
+O `IdentitiesOnly yes` não é enfeite. Sem ele, o ssh oferece ao servidor as chaves do agente e os arquivos de identidade padrão do `~/.ssh`, uma por uma, mesmo tendo um `IdentityFile` explícito. Se você tem várias, o GitHub corta a conexão por excesso de tentativas antes de chegar na certa, e o erro que aparece é um genérico `Too many authentication failures`.
 
 Opcionalmente, force SSH mesmo em remotes que já estão em HTTPS:
 
@@ -214,15 +261,19 @@ git config --global user.signingkey ~/.ssh/id_ed25519_sk_github.pub
 git config --global commit.gpgsign true
 git config --global tag.gpgsign true
 git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+```
 
+```bash
 printf '%s %s\n' "voce@exemplo.com" "$(cat ~/.ssh/id_ed25519_sk_github.pub)" > ~/.ssh/allowed_signers
 ```
 
+> **Dois erros fáceis aqui.** O primeiro campo tem que ser o **e-mail real do committer**, o mesmo do `user.email`. Deixando o placeholder, a verificação local não falha; ela passa. O git acha o principal pela chave, não pelo e-mail do commit, e você fica validando assinaturas contra uma identidade que não é sua.
+>
+> E o `>` sobrescreve o arquivo. Ao adicionar a segunda chave no passo 8, use `>>`. Repetir este bloco apaga a linha da primeira.
+
 Note que `user.signingkey` aponta para a chave **pública**. Isso parece errado à primeira vista, mas é assim que o Git funciona no modo SSH: ele usa o `.pub` para localizar a credencial correspondente, e a assinatura em si acontece dentro do token.
 
-O `allowed_signers` serve apenas para verificação local — é o que faz `git log --show-signature` dizer "Good signature" em vez de "No principal matched". O GitHub não lê esse arquivo; ele usa o registro do passo 4.
-
-O e-mail no `allowed_signers` precisa ser o mesmo do `user.email` do Git **e** estar verificado na sua conta GitHub. Divergência aí é a causa mais comum de badge "Unverified" com tudo o mais correto.
+O `allowed_signers` serve apenas para verificação local: é o que faz `git log --show-signature` dizer "Good signature" em vez de "No principal matched". O GitHub não lê esse arquivo; ele usa o registro do passo 4, e o badge "Unverified" lá tem outra causa (passo 10).
 
 ## 7. Validação
 
@@ -250,28 +301,39 @@ cd /tmp && rm -rf teste-yk
 
 Este é o ponto do guia que merece mais atenção, porque a propriedade que torna a YubiKey segura é a mesma que torna a perda irreversível.
 
-**A chave privada não é exportável.** Não existe backup dela. Nenhum. YubiKey perdida, quebrada ou resetada significa acesso perdido, e nada — nem suporte da Yubico, nem root na sua máquina, nem o GitHub — recupera aquela chave.
+**A chave privada não é exportável.** Não existe backup dela. Nenhum. YubiKey perdida, quebrada ou resetada significa acesso perdido, e nada recupera aquela chave: nem suporte da Yubico, nem root na sua máquina, nem o GitHub.
 
 ### Segunda YubiKey (faça agora, não depois)
 
-A única estratégia de recuperação é ter uma segunda chave configurada em paralelo. E "depois eu configuro" é o que transforma um dispositivo perdido em uma conta inacessível.
-
-Repita os passos 3 e 4 com a segunda YubiKey, usando outro nome de arquivo:
+A única recuperação possível é uma segunda chave configurada em paralelo. Repita os passos 3 e 4 mudando **o nome do arquivo e o application id**:
 
 ```bash
 ssh-keygen -t ed25519-sk \
   -O resident \
-  -O application=ssh:github \
+  -O application=ssh:github-backup \
   -C "voce@exemplo.com (backup)" \
   -f ~/.ssh/id_ed25519_sk_github_backup \
   -N ""
 ```
 
-Registre a pública dessa segunda chave no GitHub, também nos dois tipos. Guarde o dispositivo reserva em local físico separado do primeiro — na mesma gaveta os dois se perdem juntos.
+O application id diferente importa porque o `ssh-keygen -K` deriva o nome do arquivo dele: duas credenciais `ssh:github` colidem ao recuperar numa máquina nova.
 
-Adicione como identidade alternativa no `~/.ssh/config`:
+Registre a pública nos dois tipos e acrescente a linha ao `allowed_signers` com `>>`, já que `>` apagaria a da primeira:
 
+```bash
+printf '%s %s\n' "voce@exemplo.com" "$(cat ~/.ssh/id_ed25519_sk_github_backup.pub)" >> ~/.ssh/allowed_signers
 ```
+
+Uma linha por chave, mesmo e-mail nas duas:
+
+```bash
+voce@exemplo.com sk-ssh-ed25519@openssh.com AAAAGnNr...principal... voce@exemplo.com
+voce@exemplo.com sk-ssh-ed25519@openssh.com AAAAGnNr...backup...    voce@exemplo.com (backup)
+```
+
+No `~/.ssh/config`, a do dia a dia primeiro:
+
+```bash
 Host github.com
   User git
   IdentityFile ~/.ssh/id_ed25519_sk_github
@@ -279,23 +341,35 @@ Host github.com
   IdentitiesOnly yes
 ```
 
-O ssh tenta na ordem e usa a que corresponder ao token plugado, então não é preciso trocar configuração ao alternar entre as chaves.
+Com a principal desplugada, o ssh tenta a chave dela e falha com `signing failed for ED25519-SK ...: device not found` antes de passar para a próxima `IdentityFile`. É esperado.
 
-Guarde também os recovery codes do 2FA da conta GitHub. Eles são a via de acesso se você ficar sem nenhum dos dois dispositivos.
+Já o `user.signingkey` aceita uma chave por vez, sem fallback. Duas funções no `~/.zshrc`:
+
+```bash
+yk-main()   { git config --global user.signingkey ~/.ssh/id_ed25519_sk_github.pub;        echo "signing: principal"; }
+yk-backup() { git config --global user.signingkey ~/.ssh/id_ed25519_sk_github_backup.pub; echo "signing: backup"; }
+```
+
+Guarde a reserva em local separado da primeira, e os recovery codes do 2FA junto. Quantas chaves ter e como testá-las estão em [Estratégia de backup de YubiKey](/posts/seguranca/estrategia-backup-yubikey/).
 
 ### Máquina nova
 
-Como a credencial é residente, a YubiKey basta — não é preciso copiar nada da máquina antiga:
+Como a credencial é residente, a YubiKey basta, não é preciso copiar nada da máquina antiga:
 
 ```bash
 cd ~/.ssh && ssh-keygen -K
 ```
 
-Isso baixa os handles com nomes no formato `id_ed25519_sk_rk_ssh:github`. Renomeie para `id_ed25519_sk_github` e refaça os passos 5 e 6.
+O nome do arquivo vem do application id **sem** o prefixo `ssh:`, então `ssh:github` gera `id_ed25519_sk_rk_github`. Renomeie e refaça os passos 5 e 6:
+
+```bash
+mv id_ed25519_sk_rk_github     id_ed25519_sk_github
+mv id_ed25519_sk_rk_github.pub id_ed25519_sk_github.pub
+```
 
 ## 9. Descobrindo qual credencial é qual
 
-Cenário comum: a YubiKey já foi configurada antes, por você em outra máquina ou para outra conta, e agora você não sabe o que tem dentro dela. Ou você tem duas contas — pessoal e de trabalho — e precisa saber qual credencial pertence a qual.
+Cenário comum: a YubiKey já foi configurada antes, por você em outra máquina ou para outra conta, e agora você não sabe o que tem dentro dela. Ou você tem duas contas, pessoal e de trabalho, e precisa saber qual credencial pertence a qual.
 
 Identifique antes de mexer em qualquer coisa. Apagar a credencial errada é irreversível.
 
@@ -306,7 +380,7 @@ gpg --card-status      # "General key info: [none]" = nenhuma chave OpenPGP no c
 ykman piv info         # sem CHUID e management key ainda no default = nenhum certificado PIV
 ```
 
-Se os dois vierem vazios, a autenticação é FIDO2 puro (`-sk`), não GPG smartcard nem PIV. Isso já elimina metade dos caminhos de investigação.
+Se os dois vierem vazios, a autenticação é FIDO2 puro (`-sk`), não GPG smartcard nem PIV. Isso já elimina metade dos caminhos de investigação. Numa Security Key Series os dois comandos falham por falta do applet, o que responde a pergunta do mesmo jeito: só pode ser FIDO2.
 
 **2. Liste as credenciais residentes na FIDO2**
 
@@ -314,9 +388,9 @@ Se os dois vierem vazios, a autenticação é FIDO2 puro (`-sk`), não GPG smart
 ykman fido credentials list
 ```
 
-Pede o PIN — rode em um terminal interativo de verdade, não via automação ou CI. Cada linha traz `Credential ID`, `RP ID`, `Username` e `Display name`.
+Pede o PIN, então rode em um terminal interativo de verdade, não via automação ou CI. Cada linha traz `Credential ID`, `RP ID`, `Username` e `Display name`.
 
-As credenciais SSH aparecem com `RP ID` no formato `ssh:<nome>` — exatamente o valor que foi passado em `-O application=` na criação, como `ssh:github` ou `ssh:github-trabalho`. Linhas com `RP ID` do tipo `github.com`, `google.com` ou `login.microsoft.com` são passkeys de login pelo navegador (WebAuthn), não chaves SSH. Ignore-as para este fim.
+As credenciais SSH aparecem com `RP ID` no formato `ssh:<nome>`, exatamente o valor que foi passado em `-O application=` na criação, como `ssh:github` ou `ssh:github-trabalho`. Linhas com `RP ID` do tipo `github.com`, `google.com` ou `login.microsoft.com` são passkeys de login pelo navegador (WebAuthn), não chaves SSH. Ignore-as para este fim.
 
 **3. Extraia as chaves públicas das credenciais SSH**
 
@@ -324,18 +398,18 @@ As credenciais SSH aparecem com `RP ID` no formato `ssh:<nome>` — exatamente o
 cd ~/.ssh && ssh-keygen -K
 ```
 
-Gera um par `id_ed25519_sk_rk_ssh:<nome>` e `.pub` para cada credencial `ssh:*` encontrada.
+Gera um par `id_ed25519_sk_rk_<nome>` e `.pub` para cada credencial `ssh:*` encontrada. O prefixo `ssh:` é cortado do nome do arquivo, então `ssh:github` vira `id_ed25519_sk_rk_github`.
 
 **4. Compare o fingerprint com o que está cadastrado em cada conta**
 
 ```bash
-ssh-keygen -lf ~/.ssh/id_ed25519_sk_rk_ssh:github.pub
+ssh-keygen -lf ~/.ssh/id_ed25519_sk_rk_github.pub
 ```
 
 Confronte com o fingerprint SHA256 listado em https://github.com/settings/keys, trocando de conta se você tiver mais de uma. Ou teste direto, apontando para o arquivo específico:
 
 ```bash
-ssh -T git@github.com -i ~/.ssh/id_ed25519_sk_rk_ssh:github
+ssh -T git@github.com -i ~/.ssh/id_ed25519_sk_rk_github
 ```
 
 O toque seguido de `Hi <usuario>! You've successfully authenticated` confirma qual credencial pertence a qual conta, sem ambiguidade.
@@ -377,9 +451,9 @@ Antes de tentar de novo, verifique o contador:
 ykman fido info
 ```
 
-`PIN retries remaining` abaixo de 8 confirma que o PIN está sendo rejeitado.
+A linha `PIN` traz o contador, no formato `PIN: 8 attempt(s) remaining`. Abaixo de 8 confirma que o PIN está sendo rejeitado. Se vier `PIN is temporarily blocked`, foram três erros seguidos no mesmo ciclo de energia: desplugue e replugue a chave para liberar as tentativas restantes.
 
-> **Atenção:** o PIN do FIDO2 tem 8 tentativas. Esgotadas, a applet bloqueia e o único caminho de volta é `ykman fido reset`, que **apaga permanentemente todas as passkeys de todas as contas** armazenadas no dispositivo — não só a do GitHub. Diagnostique a causa antes de tentar repetidamente.
+> **Atenção:** o PIN do FIDO2 tem 8 tentativas. Esgotadas, a applet bloqueia e o único caminho de volta é `ykman fido reset`, que **apaga permanentemente todas as passkeys de todas as contas** armazenadas no dispositivo, não só a do GitHub. Diagnostique a causa antes de tentar repetidamente.
 
 ### `Permission denied (publickey)`
 
@@ -394,12 +468,20 @@ O `Offering` mostra qual arquivo o ssh está de fato tentando usar.
 
 ### Handle não corresponde à credencial
 
+O `ykman fido credentials list` mostra `Credential ID`, `RP ID` e nomes, nunca o fingerprint SSH. Não dá para cruzar as duas coisas por ali. Para saber se o handle no disco corresponde a alguma credencial no token, recupere as residentes num diretório separado e compare os fingerprints:
+
 ```bash
 ssh-keygen -lf ~/.ssh/id_ed25519_sk_github.pub
-ykman fido credentials list
 ```
 
-O fingerprint precisa aparecer na listagem. Se não aparecer, o arquivo é resquício de uma chave antiga — talvez de um dispositivo que foi resetado. Recupere a credencial residente com `ssh-keygen -K`, ou apague a órfã e regenere:
+```bash
+mkdir -p /tmp/rk && cd /tmp/rk && ssh-keygen -K
+for f in *.pub; do ssh-keygen -lf "$f"; done
+```
+
+Se o `SHA256:` do primeiro comando aparecer na saída do segundo, o handle é válido e o problema está em outro lugar, e você pode apagar o diretório temporário com `rm -rf /tmp/rk`. Se não aparecer, o arquivo é resquício de uma chave antiga, talvez de um dispositivo que foi resetado: use o par recuperado em `/tmp/rk` no lugar dele, renomeando conforme o passo 8.
+
+O caso inverso, credencial ocupando slot no token sem handle correspondente no disco, se resolve apagando pelo `Credential ID` que o `credentials list` mostra:
 
 ```bash
 ykman fido credentials delete <credential-id>
@@ -419,9 +501,9 @@ Três causas, em ordem de frequência:
 
 Vale ser explícito sobre o que essa configuração protege e o que não protege. Sem `verify-required`, o fator de autenticação é **presença física apenas**:
 
-- ✅ Malware remoto não consegue usar a chave — precisa de um toque no dispositivo, e não há como simular isso por software
+- ✅ Malware remoto não consegue usar a chave: precisa de um toque no dispositivo, e não há como simular isso por software
 - ✅ A chave privada não é extraível, nem com root na máquina
 - ✅ Vazamento de backup do disco não expõe nada, porque o arquivo é só um handle
 - ❌ Quem tiver a YubiKey em mãos consegue usar a chave
 
-Esse último item é a consequência direta de não exigir PIN. Na prática significa: não deixe a YubiKey plugada em máquina desacompanhada. Se o seu ambiente não permite confiar nisso — máquina compartilhada, escritório aberto, laptop que viaja — use `-O verify-required` com `ecdsa-sk` para adicionar o PIN como segundo fator, aceitando digitar o PIN a cada operação.
+Esse último item é a consequência direta de não exigir PIN. Na prática significa: não deixe a YubiKey plugada em máquina desacompanhada. Se o seu ambiente não permite confiar nisso (máquina compartilhada, escritório aberto, laptop que viaja), use `-O verify-required` com `ecdsa-sk` para adicionar o PIN como segundo fator, aceitando digitar o PIN a cada operação.
